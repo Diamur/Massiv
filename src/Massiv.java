@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Massiv {
 
     private int kol = 9;
-    private int[] iteration = new int[kol*kol];
+    private int iteration = 0;
     private int[][] position = new int[kol*kol][];
     private int mas[][] = new int[kol][kol];
     private int[][][] masbuf = new int[kol*kol][][];
@@ -70,16 +70,16 @@ public class Massiv {
 // вычислить цифру можно использовать в данной ячейке или -1 - нельзя
     public int getNamber(int ind, int kin, int iteration ){
         for (int value : this.number)
-            if(this.position[iteration][3] > value || this.position[iteration][3] != 9 )
-                if(verifyNamber(ind,kin,value,iteration))return num;
+            if(this.position[iteration][2] > value || this.position[iteration][2] != 9 )
+                if(verifyNamber(ind,kin,value,iteration))return value;
         return -1;
     }
 
 //  проверяем выбранную цифру в строке столбце и блоке
     public boolean verifyNamber(int ind,int kin,int value,int iteration){
-        if(verifyNamberLine(ind, value, this.iteration[iteration]))
-            if(verifyNabmerColumn(kin,value, this.iteration[iteration]))
-                if(verifyNabmerBlok(ind, kin, value, this.iteration[iteration])) return true;
+        if(verifyNamberLine(ind, value, iteration))
+            if(verifyNabmerColumn(kin, value, iteration))
+                if(verifyNabmerBlok(ind, kin, value, iteration)) return true;
         return false;
     }
 // проверяем выбранную цифру в строке
@@ -100,13 +100,63 @@ public class Massiv {
         return true;
     }
 
-// проверяем выбранную цифру в блоке
+// Устанавливаем номер блока
+    public int getNamberBlok(int i,int k){
+        if (i >=0 && i < 3 && k >=0 && k < 3) return 1;
+        if (i >=0 && i < 3 && k >2 && k < 6) return 2;
+        if (i >=0 && i < 3 && k >5 && k < 9) return 3;
+        if (i >2 && i < 6 && k >=0 && k < 3) return 4;
+        if (i >2 && i < 6 && k >2 && k < 6) return 5;
+        if (i >2 && i < 6 && k >5 && k < 9) return 6;
+        if (i >5 && i < 9 && k >=0 && k < 3) return 7;
+        if (i >5 && i < 9 && k >2 && k < 6) return 8;
+        if (i >5 && i < 9 && k >5 && k < 9) return 9;
+        return -1;
+    }
+
+// проверяем выбранную цифру в блоке 3x3
 
     private boolean verifyNabmerBlok(int ind,int kin, int value, int iteration){
 
-        for(int blok)
 
-
+        switch (getNamberBlok(ind, kin)) {
+            case 1:
+                for (int i = this.blokone[0][0] ; i <= this.blokone[0][2]; i++)
+                    for (int k = this.blokone[0][0]; k <= this.blokone[1][2] ; k++)
+                        if (this.masbuf[iteration][i][k] == value) return false;
+            case 2:
+                for (int i = this.bloktwo[0][0] ; i <= this.bloktwo[0][2]; i++)
+                    for (int k = this.bloktwo[0][0]; k <= this.bloktwo[1][2] ; k++)
+                        if (this.masbuf[iteration][i][k] == value) return false;
+            case 3:
+                for (int i = this.blokthree[0][0] ; i <= this.blokthree[0][2]; i++)
+                    for (int k = this.blokthree[0][0]; k <= this.blokthree[1][2] ; k++)
+                        if (this.masbuf[iteration][i][k] == value) return false;
+            case 4:
+                for (int i = this.blokfour[0][0] ; i <= this.blokfour[0][2]; i++)
+                    for (int k = this.blokfour[0][0]; k <= this.blokfour[1][2] ; k++)
+                        if (this.masbuf[iteration][i][k] == value) return false;
+            case 5:
+                for (int i = this.blokfive[0][0] ; i <= this.blokfive[0][2]; i++)
+                    for (int k = this.blokfive[0][0]; k <= this.blokfour[1][2] ; k++)
+                        if (this.masbuf[iteration][i][k] == value) return false;
+            case 6:
+                for (int i = this.bloksix[0][0] ; i <= this.bloksix[0][2]; i++)
+                    for (int k = this.bloksix[0][0]; k <= this.bloksix[1][2] ; k++)
+                        if (this.masbuf[iteration][i][k] == value) return false;
+            case 7:
+                for (int i = this.blokseven[0][0] ; i <= this.blokseven[0][2]; i++)
+                    for (int k = this.blokseven[0][0]; k <= this.blokseven[1][2] ; k++)
+                        if (this.masbuf[iteration][i][k] == value) return false;
+            case 8:
+                for (int i = this.blokeight[0][0] ; i <= this.blokeight[0][2]; i++)
+                    for (int k = this.blokeight[0][0]; k <= this.blokeight[1][2] ; k++)
+                        if (this.masbuf[iteration][i][k] == value) return false;
+            case 9:
+                for (int i = this.bloknine[0][0] ; i <= this.bloknine[0][2]; i++)
+                    for (int k = this.bloknine[0][0]; k <= this.bloknine[1][2] ; k++)
+                        if (this.masbuf[iteration][i][k] == value) return false;
+        }
         return true;
 
     }
@@ -119,13 +169,14 @@ public class Massiv {
 
         for(int i: this.numbernull) {
             for (int k : this.numbernull){
-                if(verifyMasFill(i,k,this.iteration[iteration])) {
+                if(verifyMasFill(i,k,iteration)) {
                     value = getNamber(i,k,iteration);
                     iteration++ ;
+                    this.masbuf[iteration] = this.masbuf[iteration-1];
                     this.position[iteration] = new int[]{i,k,value};
-                    this.iteration[iteration] = iteration++ ;
                     this.masbuf[iteration][i][k] = value;
-                } else setMasFill();
+                    setMasFill(value,iteration);
+                } else setMasFill(value,iteration-1);
             }
         }
     }
@@ -150,7 +201,7 @@ public class Massiv {
         this.printStroka(i);
             System.out.println("");
         }
-    this.mas = this.masbuf[0];
+    this.masbuf[0] = this.mas;
     }
 
 }

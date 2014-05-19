@@ -1,9 +1,8 @@
-/**
- * Created by Diamur on 18.05.2014.
- */
+
 public class Main {
     public static void main(String[] arg){
-        Massiv massiv = new Massiv();
+        Massiv massiv = new Massiv(9);
         massiv.setMas();
+        massiv.setMasFill(0,0);
     }
 }
