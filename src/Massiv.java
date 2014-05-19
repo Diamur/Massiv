@@ -164,19 +164,19 @@ public class Massiv {
 
 // заполняем массив цифрами
 
-    public void setMasFill(int value,int iteration){
+    public void setMasFill(int iteration){
 
 
         for(int i: this.numbernull) {
             for (int k : this.numbernull){
                 if(verifyMasFill(i,k,iteration)) {
-                    value = getNamber(i,k,iteration);
+                    int value = getNamber(i,k,iteration);
                     iteration++ ;
                     this.masbuf[iteration] = this.masbuf[iteration-1];
                     this.position[iteration] = new int[]{i,k,value};
                     this.masbuf[iteration][i][k] = value;
-                    setMasFill(value,iteration);
-                } else setMasFill(value,iteration-1);
+                    setMasFill(iteration);
+                }  else if(iteration > 0) setMasFill(iteration-1);
             }
         }
     }
