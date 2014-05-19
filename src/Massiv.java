@@ -70,7 +70,8 @@ public class Massiv {
 // вычислить цифру можно использовать в данной ячейке или -1 - нельзя
     public int getNamber(int ind, int kin, int iteration ){
         for (int value : this.number)
-            if(this.position[iteration][2] < value || this.position[iteration][2] != 9 )
+            if(this.position[iteration][2] < value )//|| this.position[iteration][2] != 9 )
+
                 if(verifyNamber(ind,kin,value,iteration))return value;
         return -1;
     }
@@ -170,7 +171,7 @@ public class Massiv {
             for (int k : this.numbernull){
                // if(verifyMasFill(i,k,iteration)) {
                   if(this.verifyCellEmpty(i,k,iteration)){
-                    if(getNamber(i,k,iteration)>0)  value = getNamber(i,k,iteration);
+                    if(getNamber(i,k,iteration)>0) { value = getNamber(i,k,iteration); this.position[iteration][2] = value;}
                     else if(iteration > 0) setMasFill(iteration-1);
                       iteration++ ;
                     this.masbuf[iteration] = this.masbuf[iteration-1];
