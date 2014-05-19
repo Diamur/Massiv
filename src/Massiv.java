@@ -70,16 +70,15 @@ public class Massiv {
 // вычислить цифру можно использовать в данной ячейке или -1 - нельзя
     public int getNamber(int ind, int kin, int iteration ){
         for (int value : this.number)
-            if(this.position[iteration][2] > value || this.position[iteration][2] != 9 )
+            if(this.position[iteration][2] < value || this.position[iteration][2] != 9 )
                 if(verifyNamber(ind,kin,value,iteration))return value;
         return -1;
     }
 
 //  проверяем выбранную цифру в строке столбце и блоке
     public boolean verifyNamber(int ind,int kin,int value,int iteration){
-        if(verifyNamberLine(ind, value, iteration))
-            if(verifyNabmerColumn(kin, value, iteration))
-                if(verifyNabmerBlok(ind, kin, value, iteration)) return true;
+        if(verifyNamberLine(ind, value, iteration) == true && verifyNabmerColumn(kin, value, iteration)== true && verifyNabmerBlok(ind, kin, value, iteration)== true )
+            return true;
         return false;
     }
 // проверяем выбранную цифру в строке
@@ -165,18 +164,21 @@ public class Massiv {
 // заполняем массив цифрами
 
     public void setMasFill(int iteration){
-
+        int value =0;
 
         for(int i: this.numbernull) {
             for (int k : this.numbernull){
-                if(verifyMasFill(i,k,iteration)) {
-                    int value = getNamber(i,k,iteration);
-                    iteration++ ;
+               // if(verifyMasFill(i,k,iteration)) {
+                  if(this.verifyCellEmpty(i,k,iteration)){
+                    if(getNamber(i,k,iteration)>0)  value = getNamber(i,k,iteration);
+                    else if(iteration > 0) setMasFill(iteration-1);
+                      iteration++ ;
                     this.masbuf[iteration] = this.masbuf[iteration-1];
                     this.position[iteration] = new int[]{i,k,value};
                     this.masbuf[iteration][i][k] = value;
+                    this.printMassiv(iteration);
                     setMasFill(iteration);
-                }  else if(iteration > 0) setMasFill(iteration-1);
+                }  //else if(iteration > 0) setMasFill(iteration-1);
             }
         }
     }
@@ -185,9 +187,18 @@ public class Massiv {
     public void printStroka(int ind){
         for(int i = 0 ; i <= ind ; i++) {
             for (int k : numbernull)
-                System.out.print(this.mas[i][k] + " ");
+                System.out.print(this.mas[i][k] + "\t");
             System.out.println("");
         }
+    }
+// печать массива
+    public void printMassiv(int iteration){
+        for (int i : this.numbernull) {
+            for (int k : this.numbernull)
+                System.out.print(this.masbuf[iteration][i][k] + "\t" );
+            System.out.println("");
+        }
+        System.out.println("");
     }
 
 // заполняем массив исходными данными
@@ -199,7 +210,7 @@ public class Massiv {
                 this.mas[i][k] = in.nextInt();
             }
         this.printStroka(i);
-            System.out.println("");
+            System.out.println("\n");
         }
     this.masbuf[0] = this.mas;
     }
